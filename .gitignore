@@ -37,6 +37,7 @@ pip-log.txt
 pip-delete-this-directory.txt
 pip-selfcheck.json
 pyenv.cfg
+pyvenv.cfg
 
 # Unit test / coverage reports
 htmlcov/
