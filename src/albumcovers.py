@@ -5,6 +5,12 @@ import random
 from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
+import keys
+import flickrapi
+import urllib.request
+
+api_key = keys.api_key()
+api_secret = keys.api_secret()
 
 
 def get_quote_list(title):
@@ -19,8 +25,8 @@ def get_quote_list(title):
 
     return quote_list
 
-def get_band_name():
 
+def get_band_name():
     return random.choice(wikipedia.random(5))
 
 
@@ -35,7 +41,7 @@ def get_album_name():
             quote = random.choice(quote_list).split()
             chosen = True
         except IndexError:
-            quote_list = get_quote_list()
+            quote_list = get_quote_list(title)
 
     quote_position = random.randint(0, len(quote))
 
@@ -64,5 +70,16 @@ def draw_album(album, band):
     draw.text((5, 0), band, (255, 255, 255), font=font_band)
     draw.text((5, 25), album, (255, 255, 255), font=font_album)
     img.save('sample-out.jpg')
+
+
+def download_file():
+    flickr = flickrapi.FlickrAPI(api_key, api_secret, format='parsed-json')
+    photo = flickr.photos.getRecent()['photos']['photo'][4]
+    farm_id = photo['farm']
+    server = photo['server']
+    photo_id = photo['id']
+    secret = photo['secret']
+    url = 'https://farm{}.staticflickr.com/{}/{}_{}_z.jpg'.format(farm_id, server, photo_id, secret)
+    urllib.request.urlretrieve(url, "sample.jpg")
 
 
